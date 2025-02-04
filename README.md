@@ -12,6 +12,8 @@ The project uses the [COUGHVID crowdsourcing dataset](https://www.kaggle.com/dat
 
 The dataset's metadata provides three main types of information: (1) contextual information such as timestamps and the probability that a recording contains a cough sound, (2) self-reported information from users, and (3) labels provided by medical experts, including clinical assessments of the cough status in the recordings.
 
+![](https://github.com/hemanth-92/covid-19-detection/blob/main/image%20source/dataset.jpg)
+
 ## 3. Method
 
 ### 3.1. Data preprocessing
@@ -28,7 +30,11 @@ From the over 25,000 audio recordings in the COUGHVID dataset, the team filtered
 
 Over 50% of the recordings are between 9.5 and 10 seconds in length. To create consistent spectrograms, the team performed zero-padding to ensure all recordings are 10 seconds long.
 
+![](https://github.com/hemanth-92/covid-19-detection/blob/main/image%20source/zero%20padding.jpg)
+
 ### 3.2. Dataset balancing
+
+![](https://github.com/hemanth-92/covid-19-detection/blob/main/image%20source/distribution%20of%20status%20value.jpg)
 
 Noticing an imbalance among the classes in the dataset, which could adversely affect the classification model's results, the team applied several methods to balance the data as follows:
 
@@ -37,6 +43,8 @@ Noticing an imbalance among the classes in the dataset, which could adversely af
 - **Over Sampling with SMOTE:** The team used SMOTE to generate additional samples, creating a balanced dataset with 3,000 samples for each label. They selected 3,000 samples for the "healthy" label and augmented the other labels to match this quantity.
 
 ### 3.3. Feature extraction
+
+![](https://github.com/hemanth-92/covid-19-detection/blob/main/image%20source/zero%20padding.jpg)
 
 To assess the similarity between two audio signals, a common approach is to use time-frequency representations. **Mel Frequency Cepstral Coefficients (MFCCs)** are audio features obtained using the frequency transform of the logarithm of the spectrum. MFCCs have a frequency resolution similar to human hearing, allowing them to capture the nonlinear auditory response to sound frequencies.
 

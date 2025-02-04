@@ -1,5 +1,3 @@
-# project
-
 # COVID19-cough-classification
 
 ## 1. Introduce

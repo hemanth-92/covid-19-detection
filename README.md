@@ -2,7 +2,7 @@
 
 ## 1. Introduce
 
-This project focuses on developing a system for classifying cough sounds related to Covid-19 into three categories: infected individuals, symptomatic individuals, and healthy individuals. Unlike previous studies that typically classify Covid-19 cough sounds against other respiratory diseases or between infected and healthy individuals, this project broadens the analysis by applying and evaluating the effectiveness of machine learning models such as Logistic Regression, Support Vector Machine, and K-Nearest Neighbors, Convolutional Neural Networks. Classifying into three categories not only enhances the accuracy in early detection of Covid-19 but also improves the practical application in disease prevention and control.
+This project focuses on developing a system for classifying cough sounds related to Covid-19 into three categories: infected individuals, symptomatic individuals, and healthy individuals. Unlike previous studies that typically classify Covid-19 cough sounds against other respiratory diseases or between infected and healthy individuals, this project broadens the analysis by applying Time distributed Convetional neural network and BiLSTM
 
 ## 2. Dataset
 
@@ -55,10 +55,3 @@ In addition to MFCCs, the team extracted other audio features:
 - **Spectral Centroid:** Represents the average frequency of the entire audio spectrum.
   Spectral Bandwidth: Measures the width of the audio spectrum, reflecting the sharpness of the sound.
 
-- **Spectral Crest Factor:** Compares the maximum peak of the audio spectrum to its mean value, helping to identify sudden high frequencies.
-
-- **Spectral Standard Deviation:** Measures the variability of spectral components from the mean.
-
-- **Spectral Mean:** The average value of all spectral components.
-
-- **Spectral Skewness:** Measures the asymmetry of the audio spectrum, reflecting whether the spectrum is skewed to the left or right.

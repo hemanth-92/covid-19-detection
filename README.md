@@ -138,11 +138,6 @@ Evaluation metrics used to assess model performance:
 - **Training Accuracy:** 94.54%
 - **Validation Accuracy:** 76.70%
 
-### **Performance Visualizations:**
-
-- **Accuracy Graph:** *(Insert Image)*
-- **ROC Curve:** *(Insert Image)*
-
 ---
 
 

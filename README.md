@@ -1,57 +1,151 @@
-# COVID19-cough-classification
+# **Early Detection of Cough-Related Diseases Using COVID-19 Audio Data**
 
-## 1. Introduce
+## **Overview**
 
-This project focuses on developing a system for classifying cough sounds related to Covid-19 into three categories: infected individuals, symptomatic individuals, and healthy individuals. Unlike previous studies that typically classify Covid-19 cough sounds against other respiratory diseases or between infected and healthy individuals, this project broadens the analysis by applying Time distributed Convetional neural network and BiLSTM
+COVID-19, first identified in Wuhan, China, in December 2019, rapidly evolved into a global pandemic caused by the SARS-CoV-2 virus. This project aims to develop a cough sound classification model using COVID-19 audio data to enable early detection of the disease.
 
-## 2. Dataset
+## **Project Goals**
 
-The project uses the [COUGHVID crowdsourcing dataset](https://www.kaggle.com/datasets/nasrulhakim86/coughvid-wav) for building and evaluating the model. This is the largest publicly available cough sound dataset related to COVID-19 known as of 2021, containing nearly 35 hours of audio samples. The recordings in this dataset are in .webm or .ogg format, with a sample rate of 48 kHz, and include three health statuses: healthy, symptomatic, and Covid19.
+The primary objectives of this project are:
 
-The dataset's metadata provides three main types of information: (1) contextual information such as timestamps and the probability that a recording contains a cough sound, (2) self-reported information from users, and (3) labels provided by medical experts, including clinical assessments of the cough status in the recordings.
+- Develop a machine learning model to classify cough sounds for COVID-19 detection.
+- Explore various audio feature extraction techniques.
+- Address data imbalance challenges within the dataset.
+- Optimize model performance for better accuracy.
 
-![](https://github.com/hemanth-92/covid-19-detection/blob/main/image%20source/dataset.jpg)
+## **Team Members**
 
-## 3. Method
+- **S. Amarnath**  
+- **A. Hemanth**  
+- **M. Sai Dhanush**  
 
-### 3.1. Data preprocessing
+## **Project Supervisors**
 
-**Data Filtering**
+- **Dr. P. Penchala Prasad** (Associate Professor, CSE-DS)  
+- **Mr. G. Vikram Chandra (M.Tech, PhD)** (Assistant Professor, CSE-DS)  
 
-From the over 25,000 audio recordings in the COUGHVID dataset, the team filtered out the recordings to ensure model accuracy. The samples removed include:
+## **Individual Contributions**
 
-(1) Samples missing health status information
+- **Amarnath:** Feature extraction, exploratory data analysis (EDA), and training multiple models (KNN, XGBoost, Random Forest, CNN, and TD-CNN+BiLSTM).  
+- **Hemanth:** Executed models on AWS, contributed to data augmentation techniques (SMOTE, Gaussian noise), and worked on the TD-CNN+BiLSTM model.  
+- **Dhanush:** Conducted research, proposed SMOTE and advanced feature extraction techniques, and suggested improvements for model performance.  
 
-(2) Samples with a cough_detected value < 0.8, indicating a low likelihood of cough sound in the recording.
+---
 
-**Zero Padding for the Dataset**
+## **Methodology**
 
-Over 50% of the recordings are between 9.5 and 10 seconds in length. To create consistent spectrograms, the team performed zero-padding to ensure all recordings are 10 seconds long.
+The project follows a structured approach, including data collection, feature extraction, data preprocessing, model development, and evaluation.
 
-![](https://github.com/hemanth-92/covid-19-detection/blob/main/image%20source/zero%20padding.jpg)
+### **1. Data Collection**
 
-### 3.2. Dataset balancing
+- **Source:** Audio data obtained from Kaggle.
+- **Data Type:** COVID-19 cough sound recordings.
+- **File Formats:**
+  - `.wav` files (27.6K)
+  - `.json` files (27.6K)
+  - `.csv` metadata file (1)
+- **Data Loading Modules:**
+  - `pip install kaggle`
+  - `pip install opendatasets`
+- **Download Command:**
+  - `op.download("kaggle dataset link")`
 
-![](https://github.com/hemanth-92/covid-19-detection/blob/main/image%20source/distribution%20of%20status%20value.jpg)
+### **2. Feature Extraction**
 
-Noticing an imbalance among the classes in the dataset, which could adversely affect the classification model's results, the team applied several methods to balance the data as follows:
+Eleven different audio features were extracted using the `Librosa` module:
 
-- **Under Sampling:** To preserve the actual data samples, the team balanced the dataset by keeping the number of samples for the COVID-19 label constant and downsampling the other labels to achieve balance among all classes.
+- **MFCC (Mel-Frequency Cepstral Coefficients)**
+- **Chroma**
+- **Mel-Spectrogram**
+- **Spectral Contrast**
+- **Tonnetz**
+- **Spectral Centroid**
+- **Spectral Roll-off**
+- **Zero-Crossing Rate (ZCR)**
+- **Spectral Bandwidth**
+- **RMSE (Root Mean Square Energy)**
+- **Spectral Flatness**
 
-- **Over Sampling with SMOTE:** The team used SMOTE to generate additional samples, creating a balanced dataset with 3,000 samples for each label. They selected 3,000 samples for the "healthy" label and augmented the other labels to match this quantity.
+### **3. Data Imbalance Handling**
 
-### 3.3. Feature extraction
+To address data imbalance, the following techniques were used:
 
-![](https://github.com/hemanth-92/covid-19-detection/blob/main/image%20source/zero%20padding.jpg)
+- **Data Augmentation:**
+  - Gaussian Noise: `Xnoisy = X + N(μ, σ^2)`
+- **SMOTE (Synthetic Minority Oversampling Technique):**
+  - Generates synthetic samples to balance class distribution.
 
-To assess the similarity between two audio signals, a common approach is to use time-frequency representations. **Mel Frequency Cepstral Coefficients (MFCCs)** are audio features obtained using the frequency transform of the logarithm of the spectrum. MFCCs have a frequency resolution similar to human hearing, allowing them to capture the nonlinear auditory response to sound frequencies.
+### **4. Model Selection and Training**
 
-From each audio recording, the team extracted 26 MFCC coefficients. The number of samples from consecutive frames is calculated as follows: each 10-second recording has 81,920 samples due to a sample rate of 8,192 Hz, with a frame length of 512 samples and no overlapping frames. Therefore, the number of samples is 81,920 / 512 = 160.
+- **Model:** TimeDistributed CNN + Bi-LSTM
+- **Optimization:** Adam Optimizer
 
-In addition to MFCCs, the team extracted other audio features:
+#### **Adam Optimization Algorithm:**
 
-- **Zero-crossing Rate:** Measures the number of times the amplitude of the signal crosses zero, useful for audio classification.
+1. Initializes parameters, first and second moment estimates.
+2. Computes gradients of the loss function.
+3. Updates moving averages of gradient and squared gradient.
+4. Applies bias correction.
+5. Updates parameters using corrected estimates with adaptive learning rate.
+6. Iterates until convergence.
 
-- **Spectral Centroid:** Represents the average frequency of the entire audio spectrum.
-  Spectral Bandwidth: Measures the width of the audio spectrum, reflecting the sharpness of the sound.
+#### **TimeDistributed CNN:**
 
+- Applies a CNN layer (like Conv2D) across the time dimension.
+- Helps capture sequential patterns in audio data.
+
+#### **Bi-LSTM (Bidirectional Long Short-Term Memory):**
+
+- Processes data both forward and backward.
+- Captures full temporal dependencies for better classification accuracy.
+
+### **5. Model Evaluation**
+
+Evaluation metrics used to assess model performance:
+
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- Confusion Matrix
+- ROC Curve
+- Precision-Recall Curve
+
+---
+
+## **Objectives and Contributions**
+
+### **1. Feature Selection**
+
+- **Objective:** Identify and select key audio features to enhance model efficiency.
+- **Contribution:** Extracting MFCC, Chroma, Mel-Spectrogram, Spectral Contrast, and other relevant features.
+
+### **2. Addressing Data Imbalance**
+
+- **Objective:** Mitigate the impact of class imbalance.
+- **Contribution:** Implementing SMOTE and data augmentation techniques such as Gaussian noise.
+
+### **3. Model Optimization**
+
+- **Objective:** Improve training and classification accuracy.
+- **Contribution:** Implementing the Adam optimization algorithm for faster convergence and better learning.
+
+---
+
+## **Results**
+
+- **Batch Accuracy:** 88.50%
+- **Training Accuracy:** 94.54%
+- **Validation Accuracy:** 76.70%
+
+### **Performance Visualizations:**
+
+- **Accuracy Graph:** *(Insert Image)*
+- **ROC Curve:** *(Insert Image)*
+
+---
+
+
+## **Conclusion**
+
+This project successfully explores cough-based COVID-19 detection using deep learning. While promising results were achieved, future work can focus on refining the dataset and improving classification techniques for more reliable early disease detection.
